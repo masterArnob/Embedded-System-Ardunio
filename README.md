@@ -620,3 +620,36 @@ void loop()
 }
 
 ```
+
+# 7. Ultrasonic Sensor
+```
+const int trigPin = 8;
+const int echoPin = 9;
+long duration;
+int distanceCM;
+
+void setup()
+{
+  Serial.begin(9600); 
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+  delay(1000);
+}
+
+void loop()
+{
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);  
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10); 
+  digitalWrite(trigPin, LOW);
+  
+  duration = pulseIn(echoPin, HIGH);
+  distanceCM = duration * 0.034 / 2;
+  
+  Serial.println(distanceCM);  
+  
+  delay(100); 
+}
+
+```
