@@ -42,7 +42,79 @@ void loop()
 
 
 
+#water level sensor
 
+int vcc = 7;
+int sensor = A0;
+int led = 13;
+int buzzer = 8; 
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(vcc, OUTPUT);
+  pinMode(led, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  digitalWrite(vcc, LOW);
+  digitalWrite(led, LOW);
+  digitalWrite(buzzer, LOW);
+  
+
+}
+
+void loop()
+{
+  int level = water_level();
+  
+  
+  float moisture_percent = (level / 1023.00) * 100.00;  
+  float dryness_percent = 100 - moisture_percent;           
+  
+
+  Serial.print("Moisture Percent: ");
+  Serial.print(moisture_percent);
+  Serial.println("%");
+  Serial.print("Dryness Percent: ");
+  Serial.print(dryness_percent);
+  Serial.println("%");
+  
+  // Check moisture level and activate indicators
+  if(moisture_percent < 20)  // Low moisture detected
+  {
+    Serial.println(" - LOW MOISTURE! ALERT!");
+    digitalWrite(led, HIGH);
+    activateBuzzer();
+  }
+  else
+  {
+    Serial.println(" - OK");
+    digitalWrite(led, LOW);
+    digitalWrite(buzzer, LOW);
+  }
+  
+  delay(1000);
+}
+
+int water_level()
+{
+  digitalWrite(vcc, HIGH);
+  delay(10);
+  int value = analogRead(sensor);
+  digitalWrite(vcc, LOW);
+  return value;
+}
+
+void activateBuzzer()
+{
+  for(int i = 0; i < 3; i++) {
+    digitalWrite(buzzer, HIGH);
+    delay(200);
+    digitalWrite(buzzer, LOW);
+    delay(200);
+  }
+}
+
+#water level sensor
 
 
 
