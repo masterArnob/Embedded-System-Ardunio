@@ -1,0 +1,51 @@
+int moisture_signal = A0;
+int led = 13;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(led, OUTPUT);
+}
+
+void loop()
+{
+  int moisture = analogRead(moisture_signal);
+  
+  float moisture_percent = (moisture / 1023.00) * 100.00;
+  float dryness_percent = 100 - moisture_percent;
+  
+  Serial.print("Moisture Percent: ");
+  Serial.println(moisture_percent);
+  Serial.print("Dryness Percent: ");
+  Serial.print(dryness_percent);
+  Serial.println("%");
+  
+  if(moisture_percent < 20)
+  {
+    Serial.println("Low moisture detected! LED ON");
+    digitalWrite(led, HIGH);
+  }
+  else
+  {
+    digitalWrite(led, LOW);
+  }
+  
+  delay(1000);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
