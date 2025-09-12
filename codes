@@ -514,3 +514,32 @@ void loop()
 # temp and humidity sensor
 
 
+
+
+# IR Sensor with buzzer
+int ir = 12;
+int buzzer = 7;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(ir, INPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop()
+{
+  int value = digitalRead(ir);
+  Serial.println(value);
+
+  if(value == 1) // it could be 0/1
+  {
+    digitalWrite(buzzer, HIGH);
+  }
+  else{
+    digitalWrite(buzzer, LOW);
+  }
+}
+# IR Sensor with buzzer
+
+
