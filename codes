@@ -467,7 +467,50 @@ void loop()
 
 
 
+# temp and humidity sensor
 
+#define PIN 7
+#define TYPE DHT11
+#include <DHT.h>
+DHT dht(PIN, TYPE);
+const int led = 12;
 
+void setup()
+{
+  Serial.begin(9600);
+  dht.begin();
+  pinMode(led, OUTPUT);
+}
+
+void loop()
+{
+  float temp = dht.readTemperature(true);
+  float humidity = dht.readHumidity();
+  
+  if(isnan(temp) || temp > 50)
+  {
+    temp = 0;
+  }
+  if(isnan(humidity) || humidity > 100)
+  {
+    humidity = 0;
+  }
+
+  if(temp > 30)
+  {
+    digitalWrite(led, HIGH);
+  }
+  else{
+    digitalWrite(led, LOW);
+  }
+
+  Serial.print("Temperature: ");
+  Serial.println(temp);
+  Serial.print("Humidity: ");
+  Serial.println(humidity);
+  delay(5000);
+}
+
+# temp and humidity sensor
 
 
