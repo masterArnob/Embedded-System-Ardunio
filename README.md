@@ -1,1 +1,622 @@
-# final-exam
+# 1. Soil Moister Sensor
+
+```
+int moisture_signal = A0;
+int led = 13;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(led, OUTPUT);
+}
+
+void loop()
+{
+  int moisture = analogRead(moisture_signal);
+  
+  float moisture_percent = (moisture / 1023.00) * 100.00;
+  float dryness_percent = 100 - moisture_percent;
+  
+  Serial.print("Moisture Percent: ");
+  Serial.println(moisture_percent);
+  Serial.print("Dryness Percent: ");
+  Serial.print(dryness_percent);
+  Serial.println("%");
+  
+  if(moisture_percent < 20)
+  {
+    Serial.println("Low moisture detected! LED ON");
+    digitalWrite(led, HIGH);
+  }
+  else
+  {
+    digitalWrite(led, LOW);
+  }
+  
+  delay(1000);
+}
+```
+
+
+
+
+
+
+
+# 2. Water Level Sensor
+
+```
+int vcc = 7;
+int sensor = A0;
+int led = 13;
+int buzzer = 8; 
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(vcc, OUTPUT);
+  pinMode(led, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  digitalWrite(vcc, LOW);
+  digitalWrite(led, LOW);
+  digitalWrite(buzzer, LOW);
+  
+
+}
+
+void loop()
+{
+  int level = water_level();
+  
+  
+  float moisture_percent = (level / 1023.00) * 100.00;  
+  float dryness_percent = 100 - moisture_percent;           
+  
+
+  Serial.print("Moisture Percent: ");
+  Serial.print(moisture_percent);
+  Serial.println("%");
+  Serial.print("Dryness Percent: ");
+  Serial.print(dryness_percent);
+  Serial.println("%");
+  
+  // Check moisture level and activate indicators
+  if(moisture_percent < 20)  // Low moisture detected
+  {
+    Serial.println(" - LOW MOISTURE! ALERT!");
+    digitalWrite(led, HIGH);
+    activateBuzzer();
+  }
+  else
+  {
+    Serial.println(" - OK");
+    digitalWrite(led, LOW);
+    digitalWrite(buzzer, LOW);
+  }
+  
+  delay(1000);
+}
+
+int water_level()
+{
+  digitalWrite(vcc, HIGH);
+  delay(10);
+  int value = analogRead(sensor);
+  digitalWrite(vcc, LOW);
+  return value;
+}
+
+void activateBuzzer()
+{
+  for(int i = 0; i < 3; i++) {
+    digitalWrite(buzzer, HIGH);
+    delay(200);
+    digitalWrite(buzzer, LOW);
+    delay(200);
+  }
+}
+```
+
+
+
+
+
+# 3. 7 segment display
+### common cathod code
+
+```
+const int a = 3;
+const int b = 4;
+const int c = 5;
+const int d = 6;
+const int e = 7;
+const int f = 8;
+const int g = 9;
+const int h = 10;  
+
+void setup()
+{
+  pinMode(a, OUTPUT);
+  pinMode(b, OUTPUT);
+  pinMode(c, OUTPUT);
+  pinMode(d, OUTPUT);
+  pinMode(e, OUTPUT);
+  pinMode(f, OUTPUT);
+  pinMode(g, OUTPUT);
+  pinMode(h, OUTPUT);
+  
+  Serial.begin(9600);  
+
+}
+
+void clearDisplay() {
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, LOW);
+  digitalWrite(e, LOW);
+  digitalWrite(f, LOW);
+  digitalWrite(g, LOW);
+  digitalWrite(h, LOW);
+}
+
+void zero()
+{
+  clearDisplay();
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, HIGH);
+  Serial.println("Zero");
+}
+
+void one()
+{
+  clearDisplay();
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  Serial.println("One");
+}
+
+void two()
+{
+  clearDisplay();
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(g, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(d, HIGH);
+  Serial.println("Two");
+}
+
+void three()
+{
+  clearDisplay();
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(g, HIGH);
+  Serial.println("Three");
+}
+
+void four()
+{
+  clearDisplay();
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  Serial.println("Four");
+}
+
+void five()
+{
+  clearDisplay();
+  digitalWrite(a, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  Serial.println("Five");
+}
+
+void six()
+{
+  clearDisplay();
+  digitalWrite(a, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  Serial.println("Six");
+}
+
+void seven()
+{
+  clearDisplay();
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  Serial.println("Seven");
+}
+
+void eight()
+{
+  clearDisplay();
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+  Serial.println("Eight");
+}
+
+void nine()
+{
+  clearDisplay();
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+  Serial.println("Nine");
+}
+
+void loop()
+{
+  zero();
+  delay(1000);
+  one();
+  delay(1000);
+  two();
+  delay(1000);
+  three();
+  delay(1000);
+  four();
+  delay(1000);
+  five();
+  delay(1000);
+  six();
+  delay(1000);
+  seven();
+  delay(1000);
+  eight();
+  delay(1000);
+  nine();
+  delay(1000);
+}
+
+```
+
+
+
+
+### common anode code
+
+```
+const int a = 3;
+const int b = 4;
+const int c = 5;
+const int d = 6;
+const int e = 7;
+const int f = 8;
+const int g = 9;
+const int h = 10; 
+
+void setup()
+{
+  pinMode(a, OUTPUT);
+  pinMode(b, OUTPUT);
+  pinMode(c, OUTPUT);
+  pinMode(d, OUTPUT);
+  pinMode(e, OUTPUT);
+  pinMode(f, OUTPUT);
+  pinMode(g, OUTPUT);
+  pinMode(h, OUTPUT);
+  
+  Serial.begin(9600);
+  Serial.println("7-Segment Display Test Started");
+  
+  
+  clearDisplay();
+}
+
+void clearDisplay() {
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+  digitalWrite(h, HIGH);
+}
+
+void zero()
+{
+  clearDisplay();
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, LOW);
+  digitalWrite(e, LOW);
+  digitalWrite(f, LOW);
+  Serial.println("Zero");
+}
+
+void one()
+{
+  clearDisplay();
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  Serial.println("One");
+}
+
+void two()
+{
+  clearDisplay();
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(g, LOW);
+  digitalWrite(e, LOW);
+  digitalWrite(d, LOW);
+  Serial.println("Two");
+}
+
+void three()
+{
+  clearDisplay();
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, LOW);
+  digitalWrite(g, LOW);
+  Serial.println("Three");
+}
+
+void four()
+{
+  clearDisplay();
+  digitalWrite(f, LOW);
+  digitalWrite(g, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  Serial.println("Four");
+}
+
+void five()
+{
+  clearDisplay();
+  digitalWrite(a, LOW);
+  digitalWrite(f, LOW);
+  digitalWrite(g, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, LOW);
+  Serial.println("Five");
+}
+
+void six()
+{
+  clearDisplay();
+  digitalWrite(a, LOW);
+  digitalWrite(f, LOW);
+  digitalWrite(g, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, LOW);
+  digitalWrite(e, LOW);
+  Serial.println("Six");
+}
+
+void seven()
+{
+  clearDisplay();
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  Serial.println("Seven");
+}
+
+void eight()
+{
+  clearDisplay();
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, LOW);
+  digitalWrite(e, LOW);
+  digitalWrite(f, LOW);
+  digitalWrite(g, LOW);
+  Serial.println("Eight");
+}
+
+void nine()
+{
+  clearDisplay();
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, LOW);
+  digitalWrite(f, LOW);
+  digitalWrite(g, LOW);
+  Serial.println("Nine");
+}
+
+void loop()
+{
+  zero();
+  delay(1000);
+  one();
+  delay(1000);
+  two();
+  delay(1000);
+  three();
+  delay(1000);
+  four();
+  delay(1000);
+  five();
+  delay(1000);
+  six();
+  delay(1000);
+  seven();
+  delay(1000);
+  eight();
+  delay(1000);
+  nine();
+  delay(1000);
+}
+
+```
+
+
+
+
+# 4. Temperrature and Humidity sensor
+
+```
+#define PIN 7
+#define TYPE DHT11
+#include <DHT.h>
+DHT dht(PIN, TYPE);
+const int led = 12;
+
+void setup()
+{
+  Serial.begin(9600);
+  dht.begin();
+  pinMode(led, OUTPUT);
+}
+
+void loop()
+{
+  float temp = dht.readTemperature(true);
+  float humidity = dht.readHumidity();
+  
+  if(isnan(temp) || temp > 50)
+  {
+    temp = 0;
+  }
+  if(isnan(humidity) || humidity > 100)
+  {
+    humidity = 0;
+  }
+
+  if(temp > 30)
+  {
+    digitalWrite(led, HIGH);
+  }
+  else{
+    digitalWrite(led, LOW);
+  }
+
+  Serial.print("Temperature: ");
+  Serial.println(temp);
+  Serial.print("Humidity: ");
+  Serial.println(humidity);
+  delay(5000);
+}
+
+```
+
+
+
+
+
+# 5. IR Sensor with Buzzer
+
+```
+int ir = 12;
+int buzzer = 7;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(ir, INPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop()
+{
+  int value = digitalRead(ir);
+  Serial.println(value);
+
+  if(value == 1) // it could be 0/1
+  {
+    digitalWrite(buzzer, HIGH);
+  }
+  else{
+    digitalWrite(buzzer, LOW);
+  }
+}
+# IR Sensor with buzzer
+
+
+# LDR Sensor
+
+int ldr = A0;
+int led = 7;
+int threshold = 500;  
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(ldr, INPUT);
+  pinMode(led, OUTPUT);
+}
+
+void loop()
+{
+  int data = analogRead(ldr);
+  Serial.print("Light sensor Value: ");
+  Serial.println(data);
+  delay(100);
+
+  if(data <= threshold) 
+  {
+    digitalWrite(led, HIGH);
+  }
+  else
+  {
+    digitalWrite(led, LOW);
+  }
+}
+```
+
+# 6. LDR Sensor
+
+```
+int ldr = A0;
+int led = 7;
+int threshold = 500;  
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(ldr, INPUT);
+  pinMode(led, OUTPUT);
+}
+
+void loop()
+{
+  int data = analogRead(ldr);
+  Serial.print("Light sensor Value: ");
+  Serial.println(data);
+  delay(100);
+
+  if(data <= threshold) 
+  {
+    digitalWrite(led, HIGH);
+  }
+  else
+  {
+    digitalWrite(led, LOW);
+  }
+}
+
+```
