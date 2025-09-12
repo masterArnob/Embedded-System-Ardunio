@@ -543,3 +543,35 @@ void loop()
 # IR Sensor with buzzer
 
 
+# LDR Sensor
+
+int ldr = A0;
+int led = 7;
+int threshold = 500;  
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(ldr, INPUT);
+  pinMode(led, OUTPUT);
+}
+
+void loop()
+{
+  int data = analogRead(ldr);
+  Serial.print("Light sensor Value: ");
+  Serial.println(data);
+  delay(100);
+
+  if(data <= threshold) 
+  {
+    digitalWrite(led, HIGH);
+  }
+  else
+  {
+    digitalWrite(led, LOW);
+  }
+}
+
+# LDR Sensor
+
